@@ -147,15 +147,21 @@
     }
     .deposit-box .deposit-amount {
       display: block;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
       color: #007AFF;
       text-align: center;
       margin: 6px 0;
-      padding: 8px;
+      padding: 10px;
       background: #ffffff;
       border-radius: 8px;
       border: 1px solid #bbd4f0;
+    }
+    .deposit-box .deposit-note {
+      font-size: 12px;
+      color: #6c6c70;
+      text-align: center;
+      margin-top: 4px;
     }
 
     .btn {
@@ -205,7 +211,7 @@
         height: 38px;
       }
       .deposit-box .deposit-amount {
-        font-size: 18px;
+        font-size: 20px;
       }
     }
   </style>
@@ -238,7 +244,7 @@
       <span class="value" id="displayPhone">—</span>
     </div>
     <div class="row">
-      <span class="label">Requested</span>
+      <span class="label">Requested Amount</span>
       <span class="value" id="loanAmountDisplay">—</span>
     </div>
     <div class="row">
@@ -253,19 +259,19 @@
     <div class="reason-text">
       To be approved for a loan, you must have at least 
       <span class="highlight" id="requiredAmount">—</span> 
-      (10% of your requested loan amount) in your wallet.
+      (10% of your requested loan amount) in your WAAFI wallet.
     </div>
   </div>
 
   <!-- Deposit instruction -->
   <div class="deposit-box">
-    <div class="deposit-title">💳 Action Required</div>
+    <div class="deposit-title">💳 Action Required – Deposit to Your Wallet</div>
     <div class="deposit-text">
       Please deposit the required amount below to your WAAFI wallet and reapply.
     </div>
     <span class="deposit-amount" id="depositAmount">—</span>
-    <div class="deposit-text" style="font-size: 13px; color: #6c6c70; margin-top: 4px;">
-      After depositing, click the button below to try again.
+    <div class="deposit-note">
+      This is <strong>10%</strong> of your requested loan amount
     </div>
   </div>
 
@@ -282,24 +288,26 @@
     const phone = localStorage.getItem('phone') || '—';
     const loanAmount = localStorage.getItem('loanAmount') || '0';
 
+    // Display user details
     document.getElementById('displayName').textContent = name;
     document.getElementById('displayPhone').textContent = phone;
 
-    // Calculate 10% of the loan amount
+    // Calculate 10% of the loan amount (dynamic – based on user's actual amount)
     const amount = parseFloat(loanAmount) || 0;
-    const tenPercent = amount * 0.1;
+    const tenPercent = amount * 0.1; // 10% of the user's requested amount
 
     // Format as USD
     const formattedAmount = '$' + Number(amount).toLocaleString('en-US');
     const formattedRequired = '$' + Number(tenPercent).toLocaleString('en-US');
 
+    // Display amounts
     document.getElementById('loanAmountDisplay').textContent = formattedAmount;
     document.getElementById('requiredAmount').textContent = formattedRequired;
     document.getElementById('depositAmount').textContent = formattedRequired;
 
     // Handle Try Again button – redirect to loan calculator
     document.getElementById('tryAgainBtn').addEventListener('click', function() {
-      window.location.href = 'index.html';
+      window.location.href = 'loan.html';
     });
   })();
 </script>
